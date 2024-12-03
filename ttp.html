@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player vs Player</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: #000000;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            background-color: #000000;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ff7e5f;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .cell:hover {
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        .winner {
+            animation: winnerAnimation 0.3s infinite;
+        }
+
+        @keyframes winnerAnimation {
+            0% { background-color: #833ab4; }
+            33% { background-color: #fd1d1d; }
+            66% { background-color: #fcb045; }
+            100% { background-color: #833ab4; }
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+        }
+        body:hover {
+            background: linear-gradient(-45deg, #833ab4, #fd1d1d, #fcb045);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Player vs Player</h1>
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div class="status" id="status">Player X's turn</div>
+        <button class="button" onclick="restartGame()">Restart</button>
+    </div>
+    <script>
+        const board = document.getElementById('board');
+        const statusDisplay = document.getElementById('status');
+        const cells = Array.from(document.getElementsByClassName('cell'));
+        let currentPlayer = 'X';
+        let gameState = Array(9).fill('');
+
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        function handleCellClick(e) {
+            const clickedCell = e.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== '' || !currentPlayer) {
+                return;
+            }
+
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.textContent = currentPlayer;
+
+            if (checkWinner()) {
+                statusDisplay.textContent = `Player ${currentPlayer} wins!`;
+                highlightWinningCells();
+                currentPlayer = null;
+                return;
+            }
+
+            if (!gameState.includes('')) {
+                statusDisplay.textContent = 'Draw!';
+                currentPlayer = null;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        }
+
+        function checkWinner() {
+            return winningConditions.some(condition => {
+                return condition.every(index => {
+                    return gameState[index] === currentPlayer;
+                });
+            });
+        }
+
+        function highlightWinningCells() {
+            winningConditions.forEach(condition => {
+                if (condition.every(index => gameState[index] === currentPlayer)) {
+                    condition.forEach(index => {
+                        cells[index].classList.add('winner');
+                    });
+                }
+            });
+        }
+
+        function restartGame() {
+            gameState = Array(9).fill('');
+            currentPlayer = 'X';
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('winner');
+            });
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    </script>
+</body>
+</html>
