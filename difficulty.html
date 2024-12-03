@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Difficulty</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: #000000;
+        }
+        body:hover {
+            background: linear-gradient(-45deg, #833ab4, #fd1d1d, #fcb045);
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .button {
+            padding: 20px 40px;
+            background: linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045);
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            margin: 10px;
+            display: block;
+            width: 250px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background: linear-gradient(-30deg, #833ab4, #fd1d1d, #fcb045);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Difficulty</h1>
+        <a href="easy.html" class="button">Easy</a>
+        <a href="medium.html" class="button">Medium</a>
+        <a href="hard.html" class="button">Hard</a>
+        <a href="impossible.html" class="button">Impossible</a>
+    </div>
+</body>
+</html>
